@@ -1,0 +1,230 @@
+*,
+*:after,
+*:before {
+    box-sizing: border-box;
+}
+
+body {
+    timeline-scope: --carousel, --item-1, --item-2;
+    --size: 90vmin;
+    display: grid;
+    place-items: center;
+    min-height: 100vh;
+    font-family: 'Google Sans', sans-serif, system-ui;
+}
+
+.debug {
+    width: var(--size);
+    aspect-ratio: 16 / 9;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    translate: -50% -50%;
+    pointer-events: none;
+}
+
+.debug {
+    opacity: calc(0.5 * var(--debug, 0));
+    transition: opacity 0.2s;
+    z-index: -1;
+}
+
+h1 {
+    position: fixed;
+    bottom: 1rem;
+    right: 1rem;
+    font-family: sans-serif;
+    margin: 0;
+    font-size: 2rem;
+    opacity: 0.5;
+}
+
+.debug img {
+    animation: scrub both linear;
+    animation-timeline: --carousel;
+}
+
+@keyframes scrub {
+    to {
+        translate: -100% 0;
+    }
+}
+
+.product-carousel {
+    padding: 0;
+    margin: 0;
+    aspect-ratio: 16 / 9;
+    width: var(--size);
+    position: relative;
+    /* 	background: hsl(83, 14%, 85%); */
+    overflow: hidden;
+}
+
+ul {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.custom-cursor {
+    position: fixed;
+    top: calc(var(--y) * 1px);
+    left: calc(var(--x) * 1px);
+    aspect-ratio: 1;
+    color: white;
+    background: black;
+    display: grid;
+    place-items: center;
+    padding: 0.5rem;
+    z-index: 9999;
+    translate: -50% -50%;
+    scale: var(--show, 0);
+    transition: scale 0.2s;
+    pointer-events: none;
+    font-weight: bold;
+    cursor: none;
+    border-radius: 50%;
+    font-family: 'Times';
+    font-size: 0.875rem;
+}
+
+:root:has(.product-carousel:hover) {
+    --show: 1;
+    cursor: none;
+}
+
+.product-carousel__markers {
+    display: flex;
+    gap: 0.2rem;
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    z-index: 2;
+}
+
+.product-carousel__markers span {
+    width: 0.75rem;
+    aspect-ratio: 1;
+    background: black;
+    opacity: 0.25;
+}
+
+ul {
+    display: flex;
+    overflow: auto;
+    scroll-snap-type: x mandatory;
+    scroll-timeline: --carousel;
+    scroll-timeline-axis: inline;
+    list-style-type: none;
+}
+
+li {
+    flex: 1 0 var(--size);
+    height: 100%;
+    width: 100%;
+    scroll-snap-align: center;
+    padding: 0;
+    margin: 0;
+    view-timeline: --item;
+    view-timeline-axis: inline;
+}
+
+li:nth-of-type(1) {
+    view-timeline-name: --item-1;
+}
+
+li:nth-of-type(2) {
+    view-timeline-name: --item-2;
+}
+
+h2 {
+    visibility: hidden;
+    position: absolute;
+    pointer-events: none;
+    bottom: 15%;
+    right: 1rem;
+    font-weight: bold;
+    font-family: sans-serif;
+    font-size: calc(var(--size) * 0.6);
+    margin: 0;
+    color: white;
+    line-height: 0.7;
+    opacity: 0;
+    animation: fade-in both linear;
+    animation-range: cover 25% cover 75%;
+}
+
+li:nth-of-type(1) h2 {
+    animation-timeline: --item-1;
+}
+
+li:nth-of-type(2) h2 {
+    animation-timeline: --item-2;
+}
+
+@keyframes fade-in {
+    0% {
+        translate: 50% 0;
+        opacity: 0;
+    }
+
+    50% {
+        opacity: 1;
+        translate: 0 0;
+    }
+
+    100% {
+        translate: -50% 0;
+        opacity: 0;
+    }
+}
+
+span {
+    animation: indicator both linear;
+    animation-range: cover 20% cover 80%;
+}
+
+span:nth-of-type(1) {
+    animation-timeline: --item-1;
+}
+
+span:nth-of-type(2) {
+    animation-timeline: --item-2;
+}
+
+@keyframes indicator {
+    50% {
+        opacity: 1;
+    }
+}
+
+.debug img {
+    object-fit: cover;
+    height: 100%;
+    object-position: 0 50%;
+}
+
+.product-carousel img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    pointer-events: none;
+    height: 100%;
+    object-fit: cover;
+    object-position: 0 50%;
+    animation: roll both steps(99);
+    animation-timeline: --carousel;
+    /*	animation-range: 0 100%;*/
+}
+
+
+@keyframes roll {
+    0% {
+        object-position: 0 50%;
+    }
+
+    100% {
+        object-position: 100% 50%;
+    }
+}
